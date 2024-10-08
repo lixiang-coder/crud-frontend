@@ -133,8 +133,31 @@ import {ElMessage} from 'element-plus'
 
 // 数据导出
 const exportUser = () => {
-  let result = userExportService();
-  ElMessage.success(result.message ? result.message : '导出成功')
+  // bug：ajax是无法直接导出excel的，因为ajax的返回值只能是字符流，而导出excel是后台往浏览器中写入二进制的字节流
+  /*let result = userExportService();
+  ElMessage.success(result.message ? result.message : '导出成功')*/
+  fetch('api/user/export')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.blob(); // 处理二进制文件流
+      })
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = '用户数据报表.xlsx'; // 指定下载文件名
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url); // 释放URL对象
+        document.body.removeChild(a); // 移除创建的<a>标签
+        ElMessage.success('导出成功');
+      })
+      .catch(error => {
+        ElMessage.error('导出失败: ' + error.message);
+      });
 }
 
 // 新增用户
