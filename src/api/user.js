@@ -11,7 +11,6 @@ export function userSelectService(params) {
     return request.get("/user/page02", { params: params })
 }
 
-
 // 新增用户
 export function userAddService(userModel) {
     return request.post("/user/add", userModel)
@@ -30,4 +29,9 @@ export const userDeleteByIdsService = (ids) => {
 // 根据id修改用户
 export const userUpdateService = (userModel) => {
     return request.put('user/update', userModel)
+}
+
+// 用户数据导出
+export const userExportService = () => {
+    return request.get('user/export')
 }
