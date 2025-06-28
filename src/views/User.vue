@@ -7,7 +7,6 @@ import {
   userDeleteService,
   userSelectService,
   userDeleteByIdsService,
-  userExportService
 } from '../api/user.js'
 
 import {ref} from "vue"
@@ -255,15 +254,15 @@ const deleteByIdsUser = () => {
     <template #header>
       <div class="header">
         <h2><span>用户信息管理表</span></h2>
-      </div>
-      <!--功能按钮-->
-      <div class="box">
-        <el-button type="primary" :icon="Share" @click="exportUser()">数据导出</el-button>
-        <el-button type="primary" :icon="Upload" @click="dialogVisibleAdd = true">新增用户</el-button>
-        <el-button type="success" :icon="Search" @click="dialogVisibleSelect = true">查询用户</el-button>
-        <el-button type="danger" :icon="Delete" :disabled="tableChecked.length === 0"
-                   @click="deleteByIdsUser(tableChecked)">批量删除用户
-        </el-button>
+        <!--功能按钮-->
+        <div class="box">
+          <el-button type="primary" :icon="Share" @click="exportUser()">数据导出</el-button>
+          <el-button type="primary" :icon="Upload" @click="dialogVisibleAdd = true">新增用户</el-button>
+          <el-button type="success" :icon="Search" @click="dialogVisibleSelect = true">查询用户</el-button>
+          <el-button type="danger" :icon="Delete" :disabled="tableChecked.length === 0"
+                     @click="deleteByIdsUser(tableChecked)">批量删除用户
+          </el-button>
+        </div>
       </div>
     </template>
 
@@ -413,7 +412,7 @@ const deleteByIdsUser = () => {
     </el-drawer>
 
     <!-- 分页条 -->
-    <el-pagination v-model:current-page="pageNum" v-model:page-size="pageSize" :page-sizes="[3, 5, 10, 15]"
+    <el-pagination v-model:current-page="pageNum" v-model:page-size="pageSize" :page-sizes="[5, 10, 20, 50]"
                    layout="jumper, total, sizes, prev, pager, next" background :total="total"
                    @size-change="onSizeChange"
                    @current-change="onCurrentChange" style="margin-top: 20px; justify-content: flex-end"/>
@@ -427,24 +426,82 @@ const deleteByIdsUser = () => {
 .page-container {
   min-height: 100%;
   box-sizing: border-box;
+  padding: 32px 24px 24px 24px;
+  background: #fafbfc;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 18px;
 }
 
 h2 {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #222;
+  letter-spacing: 2px;
 }
 
 .box {
-  transform: translateX(100%);
-  /**右移元素**/
-  -ms-transform: translateX(65%);
-  -webkit-transform: translateX(75%);
+  display: flex;
+  gap: 18px;
+}
+
+.box .el-button {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(60, 120, 240, 0.06);
+  font-weight: 500;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.box .el-button:hover {
+  box-shadow: 0 4px 16px rgba(60, 120, 240, 0.12);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.el-table {
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.el-table th {
+  background: #f4f6fa !important;
+  color: #333;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.el-table tr:hover > td {
+  background: #f0f7ff !important;
+}
+
+.el-table .el-button {
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.el-table .el-button:hover {
+  background: #e6f7ff;
+}
+
+.el-pagination {
+  margin-top: 24px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 900px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .box {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 }
 </style>
